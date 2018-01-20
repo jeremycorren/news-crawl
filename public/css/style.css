@@ -1,0 +1,40 @@
+#byline {
+	color: grey;
+	padding-right: 15px;
+}
+
+#errors {
+	margin-top: 5px;
+}
+
+#headline {
+	font-weight: bold;
+}
+
+#panel-container {
+	display: none;
+}
+
+#section {
+	display: none;
+	color: inherit;
+	padding-right: 4px;
+}
+
+#topic-input {
+	width: 140px;
+}
+
+.control-label {
+	margin-bottom: 0px !important;
+}
+
+.panel-view {
+	width: 40%;
+}
+
+.section-label {
+	display: none;
+	color: grey;
+	padding-right: 4px;
+}

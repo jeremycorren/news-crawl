@@ -1,0 +1,42 @@
+doctype html
+html(lang='en')
+
+	head
+		title News Crawler
+		meta(charset='utf-8')
+		link(rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+		link(rel='stylesheet' href='/css/style.css' type='text/css')
+		link(rel='stylesheet' href='/css/typeahead.css' type='text/css')
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+		script(src='http://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js')
+
+	body
+		.navbar.navbar-default.navbar-static-top
+			.row
+				.col-sm-1
+				.col-sm-11
+					a.navbar-brand(href='/site') News Crawler
+
+		.row
+			.col-sm-1
+			.col-sm-5
+				.container#form-container
+					.form-group#topic-div
+						p
+							label.control-label#topic-label Fetch Articles
+						input.form-control.typeahead#topic-input(type='text' placeholder='Select a topic...')
+						#errors.text-danger
+					.form-group
+						btn#submit-btn.btn.btn-info
+							span Submit
+			.col-sm-5
+				.container
+					span
+						h4.section-label From the 
+					span
+						h4#section
+					span
+						h4.section-label Section
+				.container#panel-container
+			.col-sm-1
+		script(src='/js/script.js')

@@ -1,0 +1,22 @@
+{
+  "name": "news",
+  "version": "1.0.0",
+  "description": "NYT API reader",
+  "main": "app.js",
+  "scripts": {
+    "devstart": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "@google-cloud/datastore": "1.1.0",
+    "body-parser": "1.18.2",
+    "express": "4.15.4",
+    "pug": "2.0.0-rc.4",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.11"
+  },
+  "author": "jcorren",
+  "license": "ISC"
+}
