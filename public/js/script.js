@@ -1,55 +1,90 @@
-const topics = new Bloodhound({
-	datumTokenizer: Bloodhound.tokenizers.whitespace,
-	queryTokenizer: Bloodhound.tokenizers.whitespace,
-	local: ['Arts', 'Business', 'Science', 'Technology', 
-		'U.S.', 'Washington', 'World', 'Your Money']
-});
-
-function topicsWithDefaults(q, sync) {
-	if (q == '') {
-		sync(topics.get( // don't HARD CODE this
-			'Arts', 'Business', 'Science', 'Technology', 
-			'U.S.', 'Washington', 'World', 'Your Money'
-		));
-	} else {
-		topics.search(q, sync);
-	}
-}
-
-$('#topic-div .typeahead').typeahead({
-  highlight: true,
-	minLength: 0
-}, {
-  name: 'topics',
-  limit: 10,
-  source: topicsWithDefaults
-});
-
 const form = document.getElementById('form-container');
-const input = document.getElementById('topic-input');
+const select = document.getElementById('topic-select');
+const filterCheck = document.getElementById('filter-check');
+const submitBtn = document.getElementById('submit-btn');
 const section = document.getElementById('section');
 const panelContainer = document.getElementById('panel-container');
 
-const submitBtn = document.getElementById('submit-btn');
-submitBtn.addEventListener('click', () => {
-	const errors = document.getElementById('errors');
+/**
+ * Dropdown configuration
+ */
+$('#topic-select').select2({
+	theme: 'bootstrap',
+	placeholder: 'Select a topic',
+	allowClear: true
+});
 
-	const selectedTopic = input.value;
-	if (!topics.local.includes(selectedTopic)) {
-		errors.setAttribute('style', 'display: block;');
-		errors.textContent = 'Invalid topic';
+/**
+ * Keyword input configuration
+ */
+filterCheck.addEventListener('change', () => {
+	const keywordInput = document.getElementById('keyword');
+	if (filterCheck.checked) {
+		keywordInput.setAttribute('style', 'display: block;');
 	} else {
-		errors.setAttribute('style', 'display: none;');
+		keywordInput.value = '';
+		keywordInput.setAttribute('style', 'display: none;');
+	}
+});
 
+/**
+ * Check whether to enable form submission
+ */
+setInterval(() => {
+	const keywordInput = document.getElementById('keyword');
+	if (select.value) {
+		if (filterCheck.checked && keywordInput.value === '') {
+			submitBtn.setAttribute('disabled', 'true');
+		} else {
+			submitBtn.removeAttribute('disabled');
+		}
+	} else {
+		submitBtn.setAttribute('disabled', 'true');
+	}
+}, 100);
+
+/**
+ * On form submit, request API from backend and display query result
+ */
+submitBtn.addEventListener('click', () => {
+	const selectedTopic = select.value;
+	const keywordInput = document.getElementById('keyword');
+
+	let keyword;
+	if (keywordInput !== '') {
+		keyword = keywordInput.value;
+	}
+
+	let jsonData;
+	if (selectedTopic && !keyword) {
+		jsonData = { topic: selectedTopic };
+	}
+
+	if (selectedTopic && keyword) {
+		jsonData = {
+			topic: selectedTopic,
+			keyword: keyword
+		}
+	}
+
+	if (jsonData) {
 		fetch('/site', {
 			method: 'POST',
-			body: JSON.stringify({ topic: selectedTopic }),
+			body: JSON.stringify(jsonData),
 			headers: new Headers({ 'Content-Type': 'application/json' })
 		}).then(res => {
 			return res.json();
 		}).catch(err => {
 			console.error('Error: ', err);
 		}).then(data => {
+			const ajaxCol = document.getElementById('ajax-col');
+			ajaxCol.setAttribute('style', 'display: block;');
+
+			const instructions = document.getElementsByClassName('instruction');
+			Array.prototype.forEach.call(instructions, (instruction, idx) => {
+				instruction.setAttribute('style', 'display: block;');
+			});
+
 			const sectionLabels = document.getElementsByClassName('section-label');
 			Array.prototype.forEach.call(sectionLabels, (sectionLabel, idx) => {
 				sectionLabel.setAttribute('style', 'display: inline-block;');
@@ -60,21 +95,25 @@ submitBtn.addEventListener('click', () => {
 
 			panelContainer.setAttribute('style', 'display: block;');
 			while (panelContainer.firstChild) {
-    		panelContainer.removeChild(panelContainer.firstChild);
+	  		panelContainer.removeChild(panelContainer.firstChild);
 			}
 
 			const docs = data.docs;
 			docs.forEach(article => {
 				const outerPanel = createArticle(article);
 				panelContainer.appendChild(outerPanel);
+				
 			});
 		});
 	}
 });
 
+/**
+ * Create UI component from JSON article data
+ */
 function createArticle(article) {
 	const outerPanel = document.createElement('div');
-	outerPanel.classList.add('panel', 'panel-default', 'panel-view');
+	outerPanel.classList.add('panel', 'panel-info', 'panel-view');
 
 	const panelHeading = document.createElement('div');
 	panelHeading.className = 'panel-heading';

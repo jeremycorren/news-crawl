@@ -1,42 +1,54 @@
 doctype html
 html(lang='en')
-
 	head
 		title News Crawler
 		meta(charset='utf-8')
 		link(rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+		link(rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
+		link(rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css')
 		link(rel='stylesheet' href='/css/style.css' type='text/css')
-		link(rel='stylesheet' href='/css/typeahead.css' type='text/css')
-		script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
-		script(src='http://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js')
-
+		script(src='//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+		script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+		script(src='//cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js')
 	body
 		.navbar.navbar-default.navbar-static-top
+			.container
+				a.navbar-brand(href='/site') News Crawler
+		.container
 			.row
-				.col-sm-1
-				.col-sm-11
-					a.navbar-brand(href='/site') News Crawler
-
-		.row
-			.col-sm-1
-			.col-sm-5
-				.container#form-container
-					.form-group#topic-div
-						p
-							label.control-label#topic-label Fetch Articles
-						input.form-control.typeahead#topic-input(type='text' placeholder='Select a topic...')
-						#errors.text-danger
-					.form-group
-						btn#submit-btn.btn.btn-info
-							span Submit
-			.col-sm-5
-				.container
-					span
-						h4.section-label From the 
-					span
-						h4#section
-					span
-						h4.section-label Section
-				.container#panel-container
-			.col-sm-1
+				.col-sm-6
+					.container#form-container
+						.form-group#topic-div
+							h4 Fetch News
+							p.instruction Filter articles by topic and keyword.
+							select.form-control.js-states#topic-select
+								option
+								option(value='Arts') Arts
+								option(value='Business') Business
+								option(value='Science') Science
+								option(value='Technology') Technology
+								option(value='U.S.') U.S.
+								option(value='World') World
+								option(value='Your Money') Your Money
+						.form-group
+							.checkbox
+								label
+									input#filter-check(type='checkbox')
+									| Filter by keyword
+							input.form-control#keyword(placeholder='Enter a keyword...')
+						.form-group
+							btn#submit-btn.btn.btn-primary(disabled)
+								span Submit
+				.col-sm-6#ajax-col
+					.container
+						span
+							h4.section-label From the 
+						span
+							h4#section
+						span
+							h4.section-label Section
+						p.instruction Click on a title below to read the full article.
+					#panel-container
+					.container
+						p.instruction Scroll down to find more articles.
 		script(src='/js/script.js')

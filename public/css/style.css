@@ -1,18 +1,35 @@
+body {
+	overflow-x: hidden;
+}
+
+#ajax-col {
+	display: none;
+}
+
 #byline {
 	color: grey;
 	padding-right: 15px;
-}
-
-#errors {
-	margin-top: 5px;
 }
 
 #headline {
 	font-weight: bold;
 }
 
+#keyword {
+	display: none;
+}
+
 #panel-container {
 	display: none;
+	padding-right: 15px;
+	padding-left: 15px;
+	height: 60vh;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+}
+
+#scroll-spy {
+	width: 90px;
 }
 
 #section {
@@ -21,20 +38,32 @@
 	padding-right: 4px;
 }
 
-#topic-input {
-	width: 140px;
-}
-
 .control-label {
 	margin-bottom: 0px !important;
 }
 
+.form-group {
+	width: 140px;
+}
+
+.instruction {
+	color: grey;
+}
+
 .panel-view {
-	width: 40%;
+	width: 95%;
+}
+
+.navbar-brand {
+	margin-left: 0px !important;
 }
 
 .section-label {
 	display: none;
 	color: grey;
 	padding-right: 4px;
+}
+
+.well {
+	background-color: white;
 }
